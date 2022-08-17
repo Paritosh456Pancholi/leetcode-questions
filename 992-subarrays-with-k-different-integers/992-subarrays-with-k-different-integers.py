@@ -1,21 +1,16 @@
+from collections import OrderedDict
+
 class Solution:
-    def atMostKDistinct(self, nums, k):
-        hashmap = {}
-        subarrays = 0
-        start, end = 0, 0
-        while end < len(nums):
-            if nums[end] in hashmap:
-                hashmap[nums[end]] += 1
-            else:
-                hashmap[nums[end]] = 1
-            while len(hashmap) > k:
-                hashmap[nums[start]] -= 1
-                if hashmap[nums[start]] == 0:
-                    del hashmap[nums[start]]
-                start += 1
-            subarrays += end-start+1
-            end += 1
-        return subarrays
-    
-    def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:
-        return self.atMostKDistinct(nums, k) - self.atMostKDistinct(nums, k-1)
+    def subarraysWithKDistinct(self, A: List[int], K: int) -> int:
+        ans = l = 0
+        # Last seen index of an integer
+        od = OrderedDict()
+        for i, n in enumerate(A):
+            od[n] = i
+            od.move_to_end(n)
+            while len(od) > K:
+                l = od.popitem(last=False)[1] + 1
+            if len(od) == K:
+			    # The smallest index in od - left bound + 1
+                ans += next(iter(od.items()))[1] - l + 1
+        return ans
