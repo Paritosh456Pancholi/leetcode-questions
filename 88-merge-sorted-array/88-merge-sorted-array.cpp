@@ -5,6 +5,6 @@ public:
        {
            nums1[m+i] = nums2[i];
        }
-       sort(nums1.begin(),nums1.begin()+m+n);
+       sort(nums1.begin(),nums1.end());
    }
 };
